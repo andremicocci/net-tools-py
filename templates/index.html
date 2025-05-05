@@ -73,6 +73,34 @@
                         </div>
                         {% endif %}
                     </div>
+                    <hr class="my-4">
+                    <div>
+                        <h2>Teste em Lote (Bulk)</h2>
+                        <form method="POST" enctype="multipart/form-data" action="/bulk_test">
+                            <div class="form-group">
+                                <label for="file">Selecione um arquivo (máximo 100 linhas, formato: host ou host:porta):</label>
+                                <input type="file" class="form-control-file" id="file" name="file" accept=".txt">
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Testar em Lote</button>
+                        </form>
+                        
+                        {% if bulk_summary %}
+                        <div class="alert alert-info" role="alert">
+                            {{ bulk_summary }}
+                        </div>
+                        {% endif %}
+
+                        {% if bulk_results %}
+                        <div class="results-container mt-3">
+                            <h2>Resultados do Teste em Lote:</h2>
+                            <ul>
+                                {% for result in bulk_results %}
+                                    <li>{{ result }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

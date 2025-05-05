@@ -8,7 +8,7 @@ python main.py curl --url https://www.google.com --method GET
 python main.py ssl --host google.com --port 443
 ```
 
-## REST
+## REST / FAST API
 ```
 uvicorn web:app --reload
 
@@ -18,6 +18,14 @@ http://127.0.0.1:8000/docs
 ## STREAMLIT
 ```
 streamlit run streamlit_app.py
+```
+
+## FLASK
+```
+python flaskk.py
+http://127.0.0.1:5000/
+User admin
+Pass senha123
 ```
 
 ## DOCKER
