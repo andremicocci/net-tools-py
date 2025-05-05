@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: net-tools-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: net-tools
+  template:
+    metadata:
+      labels:
+        app: net-tools
+    spec:
+      containers:
+        - name: net-tools
+          image: mikos/net-tools:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8501

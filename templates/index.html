@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testes de Conectividade</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 60px; /* Para acomodar a navbar fixa */
+        }
+        .results-container {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">Testes de Conectividade</a>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header">
+                        Realizar Teste
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            <div class="form-group">
+                                <label for="target_host">Host de Destino:</label>
+                                <input type="text" class="form-control" id="target_host" name="target_host" value="{{ target_host_value }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="test_type">Tipo de Teste:</label>
+                                <select class="form-control" id="test_type" name="test_type">
+                                    <option value="ping" {% if test_type_value == 'ping' %}selected{% endif %}>Ping</option>
+                                    <option value="port" {% if test_type_value == 'port' %}selected{% endif %}>Verificar Porta</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="port_field" style="display: none;">
+                                <label for="target_port">Porta:</label>
+                                <input type="number" class="form-control" id="target_port" name="target_port" value="{{ target_port_value }}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Testar</button>
+                        </form>
+
+                        {% if results %}
+                        <div class="results-container mt-3">
+                            <h2>Resultados:</h2>
+                            {% if results.error %}
+                                <p class="error">{{ results.error }}</p>
+                            {% endif %}
+                            {% if results.ping %}
+                                <p><strong>Ping para {{ request.form.target_host }}:</strong></p>
+                                <pre>{{ results.ping }}</pre>
+                            {% endif %}
+                            {% if results.port %}
+                                <p><strong>Teste de Porta para {{ request.form.target_host }}:{{ request.form.target_port }}</strong></p>
+                                <p class="{{ 'success' if 'bem-sucedida' in results.port else 'error' }}">{{ results.port }}</p>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePortField() {
+            var testType = document.getElementById('test_type');
+            var portField = document.getElementById('port_field');
+            if (testType.value === 'port') {
+                portField.style.display = 'block';
+                portField.querySelector('input').setAttribute('required', '');
+            } else {
+                portField.style.display = 'none';
+                portField.querySelector('input').removeAttribute('required');
+            }
+        }
+
+        // Chama a função inicialmente para verificar o estado ao carregar a página
+        window.onload = togglePortField;
+
+        // Chama a função quando o valor do select "Tipo de Teste" muda
+        document.getElementById('test_type').addEventListener('change', togglePortField);
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

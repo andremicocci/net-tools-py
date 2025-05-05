@@ -1,0 +1,3 @@
+google.com:80
+localhost:22
+example.com:443

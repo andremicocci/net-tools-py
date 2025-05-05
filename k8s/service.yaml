@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: net-tools-service
+spec:
+  type: ClusterIP  # ou NodePort
+  selector:
+    app: net-tools
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8501
